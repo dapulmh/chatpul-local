@@ -1,8 +1,29 @@
 import { Chat } from "../models/chat.model.js";
 import { Router } from "express";
+import ollama from 'ollama';
 
 
 const router = Router();
+
+router.post(`/chat`, async (req, res) => {
+    const prompt = req.body;
+
+    if (!prompt) {
+        return res.status(400).send({ msg: 'Prompt is required' });
+    }
+
+    try {
+        const response = await ollama.chat({
+          model: 'puliolio',
+          messages: [{ role: 'user', content: prompt.content }],
+        });
+    
+        res.json({ reply: response.message.content });
+      } catch (error) {
+        res.status(500).send({ error: `Error :  ${error.message}` });
+      }
+});
+
 
 router.get(`/chats`, async (req, res) =>{
     try {
