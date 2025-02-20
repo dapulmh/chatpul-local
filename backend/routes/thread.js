@@ -1,6 +1,5 @@
 import { Thread } from "../models/chat.model.js";
 import { Router } from "express";
-import { resolveIndexByThreadId } from "../utils/middleware.js";
 
 const router = Router();
 
@@ -49,24 +48,5 @@ router.get(`/thread/:id`, async (req, res) => {
         return res.status(500).send({ msg: "Internal server error" });
     }
 });
-
-// router.post(`/image`, async (req, res) =>{
-//     const image = req.body;
-
-//     if(!image.name){
-//         res.status(403).send({msg : "Sorry you need to fill thread name"});
-//     }
-
-//     const newThread = new Thread(image)
-
-//     try{
-//         await newThread.save();
-//         res.status(201).send(newThread);
-//     }catch{
-//         console.error("Error when save the new thread");
-//         res.sendStatus(400);
-//     }
-// });
-
 
 export default router;

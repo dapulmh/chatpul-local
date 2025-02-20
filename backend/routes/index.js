@@ -1,5 +1,6 @@
 import { Router } from "express";
-import chatRouter from './thread.js';
+import threadRouter from './thread.js';
+import chatRouter from './chat.js';
 
 const router = Router();
 const loggingMiddleware = (request, response, next) =>{
@@ -7,6 +8,7 @@ const loggingMiddleware = (request, response, next) =>{
     next();
 };
 router.use(loggingMiddleware);
-router.use('/api/', chatRouter)
+router.use('/api/', threadRouter);
+router.use('/api/', chatRouter);
 
 export default router;
