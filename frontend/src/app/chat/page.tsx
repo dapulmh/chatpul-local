@@ -1,7 +1,39 @@
+"use client";
 import { ChatIcon, UserIcon, CogIcon } from "@heroicons/react/outline";
 import { Input } from "@heroui/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface Thread {
+  _id: string;
+  name: string;
+}
 
 const ChatPage = () => {
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const fetchThreads = async () => {
+    try {
+      const response = await axios.get("http://localhost:1000/api/threads");
+      setThreads(response.data);
+    } catch (err) {
+      setError("Failed to fetch threads");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchThreads();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       {/* Sidebar */}
@@ -9,19 +41,21 @@ const ChatPage = () => {
         <div>
           <h1 className="text-2xl font-bold mb-4">Chatpul</h1>
           <button className="flex items-center mb-4 p-2 rounded hover:bg-gray-700 w-full">
-            <ChatIcon className="h-5 w-5 mr-2" />
+            <UserIcon className="h-5 w-5 mr-2" />
             New chat
           </button>
           {/* Divider */}
           <div className="border-t border-white my-4" />
           <h2 className="text-lg font-semibold mb-2">List Thread</h2>
           <ul>
-            <li className="mb-2">
-              <button className="flex items-center p-2 rounded hover:bg-gray-700 w-full">
-                <UserIcon className="h-5 w-5 mr-2" />
-                Examples
-              </button>
-            </li>
+            {threads.map((thread) => (
+              <li key={thread._id} className="mb-2">
+                <button className="flex items-center p-2 rounded hover:bg-gray-700 w-full">
+                  <ChatIcon className="h-5 w-5 mr-2" />
+                  {thread.name} {/* Display the thread title */}
+                </button>
+              </li>
+            ))}
           </ul>
           {/* Divider */}
           <div className="border-t border-white my-4" />
