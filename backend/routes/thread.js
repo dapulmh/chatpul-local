@@ -49,4 +49,21 @@ router.get(`/thread/:id`, async (req, res) => {
     }
 });
 
+router.delete(`/delete-thread/:_id`, async (req, res) => {
+    const { params: { _id } } = req;
+    console.log(_id);
+    try {
+        const findThread = await Thread.findById(_id);
+        if (!findThread) {
+            return res.status(404).send({ msg: "Thread not found" });
+        } else {
+            console.log('Thread found:', findThread);
+            return res.splice(findThread);
+        }
+    } catch (err) {
+        console.error('Error retrieving Thread by ID:', err);
+        return res.status(500).send({ msg: "Internal server error" });
+    }
+});
+
 export default router;

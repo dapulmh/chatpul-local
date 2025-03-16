@@ -1,5 +1,4 @@
 "use client";
-// pages/index.tsx
 import { HomeIcon, LoginIcon, UserAddIcon } from "@heroicons/react/outline";
 
 const Home = () => {
@@ -37,9 +36,12 @@ const Home = () => {
         <h1 className="text-4xl font-bold mb-4 text-gray-800">
           Welcome to Chatpul
         </h1>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        <a
+          href="/chat"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        >
           Get Started
-        </button>
+        </a>
       </div>
     </div>
   );
